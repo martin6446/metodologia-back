@@ -1,25 +1,21 @@
-const express = require("express") ;
-const socketIO = require("socket.io");
+const express = require("express");
 const http = require("http");
 const app = express();
+const server = http.createServer(app);
+const {Server,Socket} = require("socket.io");
 
-const server = http.Server(app);
+const io = new Server(server, {
+    cors: true,
+    origins: "http://localhost:3000",
+});
 
-const io = socketIO(server);
+io.on("connection", (client) => {
+    client.send("conectado");
+    client.on("message",(msg) => {
+        io.emit("message",msg);
+    })
+});
 
 server.listen(9000, () => {
     console.log("server loaded");
 });
-
-app.get("/",(req,res) => {
-    res.send("holaa");
-})
-
-
-io.on("connection",(client) => {
-    client.send("jaja XD");
-})
-
-
-
-
