@@ -27,7 +27,13 @@ io.on("connection", (client) => {
         const u =getUser(client.id);
         client.in(u.room).emit("alert", { connected: false, user: u.name });
     })
+    client.on("timeout",(room) => {
+        const us = getUsers(room);
+        us.forEach(u => u.deleteUser());
+    })
 });
+
+
 
 server.listen(9000, () => {
     console.log("server loaded");
