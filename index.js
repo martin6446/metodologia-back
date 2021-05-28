@@ -29,7 +29,7 @@ io.on("connection", (client) => {
     })
     client.on("timeout",(room) => {
         const us = getUsers(room);
-        us.forEach(u => u.deleteUser(u.id));
+        us.forEach(u => deleteUser(u.id));
     })
 });
 
