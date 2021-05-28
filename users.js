@@ -6,7 +6,7 @@ const addUser = (id, name, room) => {
     );
     if (existingUser) return { error: "Username has already been taken" };
     if (!name || !room) return { error: "Username and room are required" };
-    room=room+"";
+    room.id=room.id+"";
     const user = { id, name, room };
     users.push(user);
     return { user };
@@ -19,7 +19,7 @@ const deleteUser = (id) => {
     if (index !== -1) return users.splice(index, 1)[0];
 };
 
-const getUsers = (room) => users.filter((user) => user.room === room);
+const getUsers = (roomId) => users.filter((user) => user.room.id === roomId);
 
 const getAll=()=>users
 
