@@ -42,7 +42,7 @@ io.on("connection", (client) => {
         getMessagesFromRoom(user.room.id).then((data)=>
             client.to(user.room.id).emit("prevMessages",data)
         );
-        client.to(user.room.id).emit("timer", 600000 - (Date.now() - roomDateTime));
+        io.to(user.room.id).emit("timer", 600000 - (Date.now() - roomDateTime));
     });
 
     client.on("message", (msg) => {
