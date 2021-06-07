@@ -39,8 +39,9 @@ io.on("connection", (client) => {
         });
         client.join(user.room.id);
         io.in(room).emit("alert", { connected: true, user: user.name });
+        addMessage(room, { connected: true, user: user.name });
         getMessagesFromRoom(user.room.id).then((data)=>
-            client.to(user.room.id).emit("prevMessages",data)
+            io.to(user.room.id).emit("prevMessages",data)
         );
         io.to(user.room.id).emit("timer", 600000 - (Date.now() - roomDateTime));
     });
