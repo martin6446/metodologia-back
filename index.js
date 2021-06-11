@@ -23,7 +23,7 @@ io.on("connection", (client) => {
             id: room,
             created: roomDateTime,
         });
-        client.join(user.room.id);
+        client.join(user?.room.id);
         client.in(room).emit("alert", { connected: true, user: user.name });
         console.log(
             "alert" + ` ${user.name} has created the room ${user.room.id}`
@@ -39,7 +39,7 @@ io.on("connection", (client) => {
             id: room,
             created: roomDateTime,
         });
-        client.join(user.room.id);
+        client.join(user?.room.id);
         io.in(room).emit("alert", { connected: true, user: user.name });
         addMessage(room, { connected: true, user: user.name });
         getMessagesFromRoom(user.room.id).then((data)=>
