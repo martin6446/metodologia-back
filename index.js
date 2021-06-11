@@ -29,6 +29,8 @@ io.on("connection", (client) => {
             "alert" + ` ${user.name} has created the room ${user.room.id}`
         );
         client.emit("timer", 600000 - (Date.now() - roomDateTime));
+
+        o.to(user.room.id).emit("members",getAll(user.room.id))
     });
 
     client.on("login", ({ name, room }) => {
@@ -44,6 +46,8 @@ io.on("connection", (client) => {
             io.to(user.room.id).emit("prevMessages",data)
         );
         io.to(user.room.id).emit("timer", 600000 - (Date.now() - roomDateTime));
+
+        o.to(user.room.id).emit("members", getAll(user.room.id));
     });
 
     client.on("message", (msg) => {
