@@ -2,8 +2,8 @@ const express = require("express");
 const http = require("http");
 const app = express();
 const server = http.createServer(app);
-const { Server, Socket } = require("socket.io");
-const { addUser, getUser, deleteUser, getUsers, getAll } = require("./users");
+const { Server } = require("socket.io");
+const { addUser, getUser, deleteUser, getUsers  } = require("./users");
 const {
     addMessage,
     getMessagesFromRoom,
@@ -30,7 +30,7 @@ io.on("connection", (client) => {
         );
         client.emit("timer", 600000 - (Date.now() - roomDateTime));
 
-        o.to(user.room.id).emit("members",getAll(user.room.id))
+        io.to(user.room.id).emit("members",getUsers(user.room.id).map(user =>user.name))
     });
 
     client.on("login", ({ name, room }) => {
@@ -47,7 +47,7 @@ io.on("connection", (client) => {
         );
         io.to(user.room.id).emit("timer", 600000 - (Date.now() - roomDateTime));
 
-        o.to(user.room.id).emit("members", getAll(user.room.id));
+        io.to(user.room.id).emit("members", getUsers(user.room.id).map(user =>user.name));
     });
 
     client.on("message", (msg) => {
@@ -57,11 +57,11 @@ io.on("connection", (client) => {
     });
 
     client.on("disconnect", () => {
-        console.log(getAll());
         const u = getUser(client.id);
         client
             .in(u?.room.id)
             .emit("alert", { connected: false, user: u?.name });
+        deleteUser(client.id);
     });
 
     client.on("reset", () => {
